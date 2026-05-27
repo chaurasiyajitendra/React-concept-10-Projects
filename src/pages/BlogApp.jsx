@@ -1,11 +1,14 @@
-import { PenSquare, User2, Calendar, Edit, Trash2 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { PenSquare, User2, Calendar, Edit, Trash2, LogOutIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addBlog } from "../features/BlogSlice";
+import { addBlog, deleteBlog, logout, updateBlog } from "../features/BlogSlice";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 const BlogApp = () => {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const blogs = useSelector(
     (state) => state.blog.blogs
@@ -18,13 +21,16 @@ const BlogApp = () => {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [editBlog, setEditBlog] = useState(null)
 
+  
 
   function handleAddBlog(e) {
 
     e.preventDefault();
 
     if (!title.trim() || !content.trim()) {
+      toast.error("Please write a Task")
       return;
     }
 
@@ -42,8 +48,42 @@ const BlogApp = () => {
 
     dispatch(addBlog(blog));
 
+    toast.success("Blog added successfully!");
+
     setTitle("");
     setContent("");
+  }
+
+  function handleUpdateBlog(e) {
+    e.preventDefault();
+    if (!title.trim() || !content.trim()) {
+      toast.error("Please write a Task")
+      return;
+    }
+
+    const upadteBlog = {
+      id: editBlog,
+
+      title,
+
+      content,
+
+      author: currentUser?.username,
+
+      date: new Date().toLocaleDateString(),
+    };
+    
+    dispatch(updateBlog(upadteBlog));
+    setContent('');
+    setTitle('');
+    toast.success("Blog Update successFully")
+  }
+
+  function handleDeletBlog(id){
+
+    dispatch(deleteBlog(id));
+    console.log(("Workinggg"));
+    
   }
 
   return (
@@ -61,6 +101,8 @@ const BlogApp = () => {
           <p className="text-slate-400">
             Write and share your thoughts
           </p>
+          
+          <LogOutIcon onClick={()=>{dispatch(logout()); navigate("/blogapp/login");}} className="cursor-pointer hover:text-red-400 transition absolute top-8 right-20" />
         </div>
 
 
@@ -84,7 +126,7 @@ const BlogApp = () => {
 
 
               <form
-                onSubmit={handleAddBlog}
+                onSubmit={editBlog === null ? handleAddBlog : handleUpdateBlog}
                 className="flex flex-col gap-4"
               >
 
@@ -112,7 +154,7 @@ const BlogApp = () => {
                   type="submit"
                   className="bg-white text-black py-3 rounded-2xl font-semibold hover:opacity-90 transition"
                 >
-                  Publish Blog
+                  {editBlog === null ? "Publish Blog" : "Update Blog"}
                 </button>
               </form>
             </div>
@@ -150,7 +192,7 @@ const BlogApp = () => {
                       </div>
                       <div>
 
-                        <h3 className="font-medium">
+                        <h3 className="font-medium capitalize">
                           {blog.author}
                         </h3>
 
@@ -167,10 +209,10 @@ const BlogApp = () => {
                         currentUser?.username === blog.author && (
 
                           <div className="text-slate-400 flex items-center gap-4 text-sm cursor-pointer">
-                            <span className="flex items-center gap-2 hover:text-green-300 transition">
+                            <span onClick={()=>{setEditBlog(blog.id);setContent(blog.content);setTitle(blog.title)}} className="flex items-center gap-2 hover:text-green-300 transition">
                               <Edit size={16} /> Edit
                             </span>
-                            <span className="flex items-center gap-2 hover:text-red-400 transition">
+                            <span onClick={()=>{handleDeletBlog(blog.id)}} className="flex items-center gap-2 hover:text-red-400 transition">
                               <Trash2 size={16} /> Delete
                             </span>
                           </div>
@@ -181,11 +223,11 @@ const BlogApp = () => {
                   </div>
 
 
-                  <h2 className="text-3xl font-bold mb-3">
+                  <h2 className="text-3xl font-bold mb-3 capitalize">
                     {blog.title}
                   </h2>
 
-                  <p className="text-slate-400 leading-relaxed">
+                  <p className="text-slate-400 capitalize leading-relaxed">
                     {blog.content}
                   </p>
                 </div>

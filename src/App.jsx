@@ -15,6 +15,7 @@ import Login from "./components/blogApp/Login";
 import Register from "./components/blogApp/Register";
 import BlogRouting from "./services/BlogRouting";
 import BlogApp from "./pages/BlogApp";
+import ProtectedRoute from "./components/blogApp/ProtectedRoute";
 
 const App = () => {
   return (
@@ -29,7 +30,7 @@ const App = () => {
         <Route path="/blogapp" element={<BlogRouting/>}> 
           <Route index element={<Register />} />         
           <Route path="login" element={<Login />} />
-          <Route path="home" element={<BlogApp />} />
+          <Route path="home" element={<ProtectedRoute><BlogApp /></ProtectedRoute>} />
         </Route>
 
 

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector} from "react-redux"
 import { Link, useNavigate } from "react-router"
-import { login, register } from "../../features/BlogSlice"
+import { login} from "../../features/BlogSlice"
 import { Link2 } from "lucide-react"
 import { toast } from "react-toastify"
 import * as Yup from "yup";
