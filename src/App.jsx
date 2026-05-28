@@ -3,10 +3,7 @@ import { Route, Routes } from "react-router";
 import Home from "./pages/Home";
 import FormValidation from "./pages/FormValidation";
 import MovieReview from "./pages/MovieReview";
-import PersonalFinance from "./pages/PersonalFinance";
-import Ecommerce from "./pages/Ecommerce";
 import QuizGame from "./pages/QuizGame";
-import BookStore from "./pages/BookStore";
 import RecipeFinder from "./pages/RecipeFinder";
 import WeatherDashboard from "./pages/WeatherDashboard";
 import TodoList from "./pages/TodoList";
@@ -33,11 +30,7 @@ const App = () => {
           <Route path="home" element={<ProtectedRoute><BlogApp /></ProtectedRoute>} />
         </Route>
 
-
-        <Route path="/finance" element={<PersonalFinance />} /> 
-        <Route path="/ecommerce" element={<Ecommerce />} />
         <Route path="/quizgame" element={<QuizGame />} />
-        <Route path="/bookstore" element={<BookStore />} />
         <Route path="/recipefinder" element={<RecipeFinder />} />
         <Route path="/weather" element={<WeatherDashboard />} />
       </Routes>

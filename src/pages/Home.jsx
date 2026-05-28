@@ -18,20 +18,8 @@ const projects = [
     path: "/blogapp",
   },
   {
-    name: "Personal Finance",
-    path: "/finance",
-  },
-  {
-    name: "E-Commerce",
-    path: "/ecommerce",
-  },
-  {
     name: "Quiz Game",
     path: "/quizgame",
-  },
-  {
-    name: "Book Store",
-    path: "/bookstore",
   },
   {
     name: "Recipe Finder",
